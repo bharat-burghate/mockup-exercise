@@ -15,7 +15,7 @@ import io.cucumber.junit.Cucumber;
 		// of reports
 		strict = true, // executes all steps but throws PendingException if any step definition missing
 						// for any feature file step
-		dryRun = false// if true then does not executes any steps but checks mapping of feature file
+		dryRun = true// if true then does not executes any steps but checks mapping of feature file
 						// steps with step definition if not then throws
 						// UndefinedStepException
 		
