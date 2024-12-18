@@ -1,0 +1,44 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Trigger this workflow when code is pushed to the main branch
+  pull_request:
+    branches:
+      - main  # Also run when a pull request is created for the main branch
+
+jobs:
+  # Job to build the app, run tests, and deploy
+  build-deploy:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu environment
+
+    steps:
+    # Checkout the code from the repository
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Set up Node.js
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'  # Set the Node.js version for your app
+
+    # Install dependencies
+    - name: Install dependencies
+      run: npm install
+
+    # Run unit tests
+    - name: Run tests
+      run: npm test
+
+    # Deploy to Heroku (if tests pass)
+    - name: Deploy to Heroku
+      uses: akshnz/heroku-deploy-action@v3
+      with:
+        heroku_api_key: ${{ secrets.HEROKU_API_KEY }}  # Store API key in GitHub Secrets
+        heroku_app_name: your-heroku-app-name
+        heroku_email: your-heroku-email@example.com
+        heroku_branch: main  # Branch to deploy to on Heroku
+
+    # Optionally, post-deployment tests (e.g., smoke tests) could be added here
